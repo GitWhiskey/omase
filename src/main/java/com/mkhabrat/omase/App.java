@@ -91,7 +91,7 @@ public class App {
         for (Agent a: agents) {
             a.makeStep(area);
         }
-        delay(2000);
+        delay(500);
     }
 
     private void delay(int millis) {

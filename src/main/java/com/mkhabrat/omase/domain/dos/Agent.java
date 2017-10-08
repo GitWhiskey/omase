@@ -25,6 +25,7 @@ public class Agent extends DomainObject {
         this.id = id;
         this.currentPosition = position;
         this.role = new ResourceSearcher();
+        log.debug("Agent {} created. Init position - {}.", id, position);
     }
 
     public void makeStep(Area area) {

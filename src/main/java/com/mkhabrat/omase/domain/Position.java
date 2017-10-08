@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @ToString
-public class Position {
+public class Position implements Cloneable {
 
     @Getter @Setter
     private int x;
@@ -16,5 +16,18 @@ public class Position {
     public Position(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public void incrementXBy(int number) {
+        this.x += number;
+    }
+
+    public void incrementYBy(int number) {
+        this.y += number;
+    }
+
+    @Override
+    public Object clone() {
+        return new Position(x, y);
     }
 }
