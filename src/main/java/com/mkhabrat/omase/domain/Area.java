@@ -1,6 +1,9 @@
 package com.mkhabrat.omase.domain;
 
 import com.mkhabrat.omase.domain.dos.DomainObject;
+import com.mkhabrat.omase.domain.dos.Resource;
+
+import java.util.List;
 
 public class Area {
 
@@ -16,5 +19,17 @@ public class Area {
 
     public void placeDomainObject(DomainObject dObject, Position position) {
         placeDomainObject(dObject, position.getX(), position.getY());
+    }
+
+    public boolean positionHasResources(Position position) {
+        return checkTypeOnPosition(position, Resource.class);
+    }
+
+    private boolean checkTypeOnPosition(Position position, Class checkedType) {
+        DomainObject domainObject = map[position.getY()][position.getX()];
+        return domainObject != null
+                && domainObject instanceof List
+                && ((List) domainObject).get(0).getClass().equals(checkedType);
+
     }
 }

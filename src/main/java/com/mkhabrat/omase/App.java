@@ -33,7 +33,7 @@ public class App {
         // run infinite loop
         while (true) {
             makeStep();
-            if (allResourcesAreCollected.isAchieved(resources, agents)) {
+            if (allResourcesAreCollected.isAchieved(resources)) {
                 log.info("Goal achieved.");
                 break;
             }
@@ -73,9 +73,9 @@ public class App {
     }
 
     private void initAgents() {
-        Agent a1 = new Agent(new Position(7, 1));
-        Agent a2 = new Agent(new Position(15, 9));
-        Agent a3 = new Agent(new Position(0, 5));
+        Agent a1 = new Agent(1, new Position(7, 1));
+        Agent a2 = new Agent(2, new Position(15, 9));
+        Agent a3 = new Agent(3, new Position(0, 5));
 
         agents.add(a1);
         agents.add(a2);
@@ -91,8 +91,12 @@ public class App {
         for (Agent a: agents) {
             a.makeStep(area);
         }
+        delay(2000);
+    }
+
+    private void delay(int millis) {
         try {
-            Thread.sleep(2000);
+            Thread.sleep(millis);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
