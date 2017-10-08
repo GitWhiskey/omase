@@ -1,6 +1,6 @@
-package ru.mkhabrat.omase.domain;
+package com.mkhabrat.omase.domain;
 
-import ru.mkhabrat.omase.domain.dos.DomainObject;
+import com.mkhabrat.omase.domain.dos.DomainObject;
 
 public class Area {
 

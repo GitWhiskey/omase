@@ -1,11 +1,11 @@
-package ru.mkhabrat.omase.domain.dos;
+package com.mkhabrat.omase.domain.dos;
 
+import com.mkhabrat.omase.domain.Area;
 import lombok.Getter;
 import lombok.Setter;
-import ru.mkhabrat.omase.domain.Area;
-import ru.mkhabrat.omase.domain.Position;
-import ru.mkhabrat.omase.roles.ResourceSearcher;
-import ru.mkhabrat.omase.roles.Role;
+import com.mkhabrat.omase.domain.Position;
+import com.mkhabrat.omase.roles.ResourceSearcher;
+import com.mkhabrat.omase.roles.Role;
 
 public class Agent extends DomainObject {
 

@@ -1,4 +1,4 @@
-package ru.mkhabrat.omase.domain.dos;
+package com.mkhabrat.omase.domain.dos;
 
 import lombok.Getter;
 import lombok.Setter;

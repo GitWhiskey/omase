@@ -1,7 +1,7 @@
-package ru.mkhabrat.omase.goals;
+package com.mkhabrat.omase.goals;
 
-import ru.mkhabrat.omase.domain.dos.Agent;
-import ru.mkhabrat.omase.domain.dos.Resource;
+import com.mkhabrat.omase.domain.dos.Agent;
+import com.mkhabrat.omase.domain.dos.Resource;
 
 import java.util.List;
 

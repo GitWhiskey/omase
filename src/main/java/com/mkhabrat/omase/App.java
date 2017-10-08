@@ -1,13 +1,13 @@
-package ru.mkhabrat.omase;
+package com.mkhabrat.omase;
 
+import com.mkhabrat.omase.domain.Area;
 import lombok.extern.slf4j.Slf4j;
-import ru.mkhabrat.omase.domain.Area;
-import ru.mkhabrat.omase.domain.Position;
-import ru.mkhabrat.omase.domain.dos.Agent;
-import ru.mkhabrat.omase.domain.dos.Base;
-import ru.mkhabrat.omase.domain.dos.Resource;
-import ru.mkhabrat.omase.goals.AllResourcesAreCollected;
-import ru.mkhabrat.omase.goals.Goal;
+import com.mkhabrat.omase.domain.Position;
+import com.mkhabrat.omase.domain.dos.Agent;
+import com.mkhabrat.omase.domain.dos.Base;
+import com.mkhabrat.omase.domain.dos.Resource;
+import com.mkhabrat.omase.goals.AllResourcesAreCollected;
+import com.mkhabrat.omase.goals.Goal;
 
 import java.util.ArrayList;
 import java.util.List;
