@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * Created by Maxon on 08.10.2017.
+ *
+ * Цель роли ResourceSearcher. Цель будет достигнута тогда, когда агент попадет на клетку с ресурсами.
  */
 @Slf4j
 public class ResourcesFound extends Goal {

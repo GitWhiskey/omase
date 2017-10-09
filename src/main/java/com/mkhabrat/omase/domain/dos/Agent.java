@@ -12,18 +12,30 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Agent extends DomainObject {
 
+    /** ID, чтобы агентов было проще различать в логах **/
     @Getter
     private int id;
 
+    /** Текущее положение агента **/
     @Getter @Setter
     private Position currentPosition;
 
+    /** Роль агента **/
     @Getter @Setter
     private Role role;
 
-    public Agent(int id, Position position) {
+    /** Ресурс, который агент несет на базу. **/
+    @Getter @Setter
+    private Resource collectedResource;
+
+    /** Расположение базы **/
+    @Getter
+    private Position basePosition;
+
+    public Agent(int id, Position position, Position basePosition) {
         this.id = id;
         this.currentPosition = position;
+        this.basePosition = basePosition;
         this.role = new ResourceSearcher();
         log.debug("Agent {} created. Init position - {}.", id, position);
     }
@@ -38,7 +50,7 @@ public class Agent extends DomainObject {
     }
 
     private void changeToNextRole() {
-        Role.RoleNames currentRole = role.getName();
+        Role.RoleName currentRole = role.getName();
         switch (currentRole) {
             case RESOURCE_SEARCHER:
                 setRole(new ResourceCollector());

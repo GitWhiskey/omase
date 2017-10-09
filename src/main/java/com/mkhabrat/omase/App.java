@@ -1,6 +1,7 @@
 package com.mkhabrat.omase;
 
 import com.mkhabrat.omase.domain.Area;
+import com.mkhabrat.omase.domain.Settings;
 import lombok.extern.slf4j.Slf4j;
 import com.mkhabrat.omase.domain.Position;
 import com.mkhabrat.omase.domain.dos.Agent;
@@ -34,7 +35,6 @@ public class App {
         while (true) {
             makeStep();
             if (allResourcesAreCollected.isAchieved(resources)) {
-                log.info("Goal achieved.");
                 break;
             }
         }
@@ -45,7 +45,7 @@ public class App {
         area = new Area(20, 10);
         // init base
         Base base = new Base();
-        area.placeDomainObject(base, 0, 0);
+        area.placeDomainObject(base, Settings.BASE_POSITION);
         // init resources
         initResources();
         // init 3 agents
@@ -73,9 +73,9 @@ public class App {
     }
 
     private void initAgents() {
-        Agent a1 = new Agent(1, new Position(7, 1));
-        Agent a2 = new Agent(2, new Position(15, 9));
-        Agent a3 = new Agent(3, new Position(0, 5));
+        Agent a1 = new Agent(1, new Position(7, 1), Settings.BASE_POSITION);
+        Agent a2 = new Agent(2, new Position(15, 9), Settings.BASE_POSITION);
+        Agent a3 = new Agent(3, new Position(0, 5), Settings.BASE_POSITION);
 
         agents.add(a1);
         agents.add(a2);
@@ -88,9 +88,7 @@ public class App {
 
     private void makeStep() {
         // all agents must perform action based on their roles
-        for (Agent a: agents) {
-            a.makeStep(area);
-        }
+        agents.forEach(a -> a.makeStep(area));
         delay(500);
     }
 

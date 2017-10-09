@@ -8,7 +8,7 @@ import lombok.Getter;
 public abstract class Role {
 
     @Getter
-    protected RoleNames name;
+    protected RoleName name;
 
     @Getter
     protected Goal goal;
@@ -21,7 +21,7 @@ public abstract class Role {
      */
     public abstract Position act(Area area, Position currentPosition);
 
-    public enum RoleNames {
+    public enum RoleName {
         RESOURCE_SEARCHER,
         RESOURCE_COLLECTOR
     }

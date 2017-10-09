@@ -15,7 +15,7 @@ public class ResourceSearcher extends Role {
     private SearchDirection yDirection;
 
     public ResourceSearcher() {
-        this.name = RoleNames.RESOURCE_SEARCHER;
+        this.name = RoleName.RESOURCE_SEARCHER;
         this.goal = new ResourcesFound();
         this.xDirection = SearchDirection.FROM_LEFT_TO_RIGHT;
         this.yDirection = SearchDirection.FROM_TOP_TO_BOTTOM;

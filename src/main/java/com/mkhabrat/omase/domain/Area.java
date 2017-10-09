@@ -5,8 +5,6 @@ import com.mkhabrat.omase.domain.dos.DomainObject;
 import com.mkhabrat.omase.domain.dos.Resource;
 import lombok.Getter;
 
-import java.util.List;
-
 public class Area {
 
     @Getter
@@ -38,8 +36,7 @@ public class Area {
     private boolean checkTypeOnPosition(Position position, Class checkedType) {
         DomainObject domainObject = map[position.getY()][position.getX()];
         return domainObject != null
-                && domainObject instanceof List
-                && checkedType.isInstance(((List) domainObject).get(0));
+                && checkedType.isInstance(domainObject);
 
     }
 
