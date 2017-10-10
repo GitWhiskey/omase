@@ -1,7 +1,7 @@
 package com.mkhabrat.omase.roles;
 
-import com.mkhabrat.omase.domain.Area;
-import com.mkhabrat.omase.domain.Position;
+import com.mkhabrat.omase.domain.original.Area;
+import com.mkhabrat.omase.domain.original.Position;
 import com.mkhabrat.omase.goals.Goal;
 import lombok.Getter;
 

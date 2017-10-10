@@ -1,4 +1,4 @@
-package com.mkhabrat.omase.domain.dos;
+package com.mkhabrat.omase.domain.original.dos;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,8 @@ public class Resource extends DomainObject {
     @Setter
     private int quantity = 1;
 
-    public Resource(int quantity) {
+    public Resource(int x, int y, int quantity) {
+        super(x, y);
         this.quantity = quantity;
     }
 }

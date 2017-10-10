@@ -1,6 +1,6 @@
 package com.mkhabrat.omase.goals;
 
-import com.mkhabrat.omase.domain.dos.Resource;
+import com.mkhabrat.omase.domain.original.dos.Resource;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;

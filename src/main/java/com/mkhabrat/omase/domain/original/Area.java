@@ -1,9 +1,14 @@
-package com.mkhabrat.omase.domain;
+package com.mkhabrat.omase.domain.original;
 
-import com.mkhabrat.omase.domain.dos.Base;
-import com.mkhabrat.omase.domain.dos.DomainObject;
-import com.mkhabrat.omase.domain.dos.Resource;
+import com.mkhabrat.omase.Settings;
+import com.mkhabrat.omase.domain.astar.EmptyObjectFactory;
+import com.mkhabrat.omase.domain.astar.EnhancedMap;
+import com.mkhabrat.omase.domain.original.dos.Base;
+import com.mkhabrat.omase.domain.original.dos.DomainObject;
+import com.mkhabrat.omase.domain.original.dos.Resource;
 import lombok.Getter;
+
+import java.util.List;
 
 public class Area {
 
@@ -13,16 +18,16 @@ public class Area {
     @Getter
     private int height;
 
-    private DomainObject[][] map;
+    private EnhancedMap<DomainObject> map;
 
     public Area(int width, int height) {
         this.width = width;
         this.height = height;
-        this.map = new DomainObject[height][width];
+        this.map = new EnhancedMap<>(width, height, new EmptyObjectFactory());
     }
 
     public void placeDomainObject(DomainObject dObject, int x, int y) {
-        map[y][x] = dObject;
+        map.placeNode(dObject, x, y);
     }
 
     public void placeDomainObject(DomainObject dObject, Position position) {
@@ -34,10 +39,8 @@ public class Area {
     }
 
     private boolean checkTypeOnPosition(Position position, Class checkedType) {
-        DomainObject domainObject = map[position.getY()][position.getX()];
-        return domainObject != null
-                && checkedType.isInstance(domainObject);
-
+        DomainObject domainObject = (DomainObject) map.getNode(position.getX(), position.getY());
+        return checkedType.isInstance(domainObject);
     }
 
     public boolean positionOutOfXBound(Position position) {
@@ -45,7 +48,7 @@ public class Area {
     }
 
     public boolean positionHasObstacles(Position position) {
-        DomainObject domainObject = map[position.getY()][position.getX()];
+        DomainObject domainObject = (DomainObject) map.getNode(position.getX(), position.getY());
         return domainObject instanceof Base;
     }
 
@@ -69,6 +72,11 @@ public class Area {
         } else {
             throw new RuntimeException("Position " + x + ", " + y + " is not a corner");
         }
+    }
+
+    public List<DomainObject> getPathToBase(Position currentPosition) {
+        Position basePosition = Settings.BASE_POSITION;
+        return map.findPath(currentPosition.getX(), currentPosition.getY(), basePosition.getX(), basePosition.getY());
     }
 
     public enum Corner {

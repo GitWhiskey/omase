@@ -1,5 +1,6 @@
-package com.mkhabrat.omase.domain;
+package com.mkhabrat.omase;
 
+import com.mkhabrat.omase.domain.original.Position;
 import lombok.experimental.UtilityClass;
 
 /**

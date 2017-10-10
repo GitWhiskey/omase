@@ -56,7 +56,7 @@ public class Map<T extends AbstractNode> {
     protected static boolean CANMOVEDIAGONALY = true;
 
     /** holds nodes. first dim represents x-, second y-axis. */
-    private T[][] nodes;
+    protected T[][] nodes;
 
     /** width + 1 is size of first dimension of nodes. */
     protected int width;
@@ -118,7 +118,7 @@ public class Map<T extends AbstractNode> {
      * @param y
      * @return node
      */
-    public final T getNode(int x, int y) {
+    public T getNode(int x, int y) {
         // TODO check parameter.
         return nodes[x][y];
     }

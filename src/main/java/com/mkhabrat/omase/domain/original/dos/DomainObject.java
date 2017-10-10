@@ -1,16 +1,22 @@
-package com.mkhabrat.omase.domain.dos;
+package com.mkhabrat.omase.domain.original.dos;
 
 import com.mkhabrat.omase.astar.AbstractNode;
-import com.mkhabrat.omase.domain.Position;
+import com.mkhabrat.omase.domain.original.Position;
+import lombok.Getter;
+import lombok.Setter;
 
 public class DomainObject extends AbstractNode {
 
+    @Getter @Setter
+    protected Position currentPosition;
+
     public DomainObject(Position position) {
         super(position.getX(), position.getY());
+        this.currentPosition = position;
     }
 
     public DomainObject(int xPosition, int yPosition) {
-        super(xPosition, yPosition);
+        this(new Position(xPosition, yPosition));
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.mkhabrat.omase.domain;
+package com.mkhabrat.omase.domain.original;
 
 import lombok.Getter;
 import lombok.Setter;

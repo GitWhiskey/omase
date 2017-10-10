@@ -1,12 +1,11 @@
 package com.mkhabrat.omase;
 
-import com.mkhabrat.omase.domain.Area;
-import com.mkhabrat.omase.domain.Settings;
+import com.mkhabrat.omase.domain.original.Area;
 import lombok.extern.slf4j.Slf4j;
-import com.mkhabrat.omase.domain.Position;
-import com.mkhabrat.omase.domain.dos.Agent;
-import com.mkhabrat.omase.domain.dos.Base;
-import com.mkhabrat.omase.domain.dos.Resource;
+import com.mkhabrat.omase.domain.original.Position;
+import com.mkhabrat.omase.domain.original.dos.Agent;
+import com.mkhabrat.omase.domain.original.dos.Base;
+import com.mkhabrat.omase.domain.original.dos.Resource;
 import com.mkhabrat.omase.goals.AllResourcesAreCollected;
 import com.mkhabrat.omase.goals.Goal;
 
@@ -44,8 +43,8 @@ public class App {
         // init area
         area = new Area(20, 10);
         // init base
-        Base base = new Base();
-        area.placeDomainObject(base, Settings.BASE_POSITION);
+        Base base = new Base(Settings.BASE_POSITION);
+        area.placeDomainObject(base, base.getCurrentPosition());
         // init resources
         initResources();
         // init 3 agents
@@ -53,11 +52,11 @@ public class App {
     }
 
     private void initResources() {
-        Resource r1 = new Resource(3);
-        Resource r2 = new Resource(6);
-        Resource r3 = new Resource(7);
-        Resource r4 = new Resource(2);
-        Resource r5 = new Resource(1);
+        Resource r1 = new Resource(3,5,3);
+        Resource r2 = new Resource(4, 1,6);
+        Resource r3 = new Resource(10, 3, 7);
+        Resource r4 = new Resource(19, 9,2);
+        Resource r5 = new Resource(2, 8,1);
 
         resources.add(r1);
         resources.add(r2);
@@ -65,11 +64,11 @@ public class App {
         resources.add(r4);
         resources.add(r5);
 
-        area.placeDomainObject(r1, 3, 5);
-        area.placeDomainObject(r2, 4, 1);
-        area.placeDomainObject(r3, 10, 3);
-        area.placeDomainObject(r4, 19, 9);
-        area.placeDomainObject(r5, 2, 8);
+        area.placeDomainObject(r1, r1.getCurrentPosition());
+        area.placeDomainObject(r2, r2.getCurrentPosition());
+        area.placeDomainObject(r3, r3.getCurrentPosition());
+        area.placeDomainObject(r4, r4.getCurrentPosition());
+        area.placeDomainObject(r5, r5.getCurrentPosition());
     }
 
     private void initAgents() {

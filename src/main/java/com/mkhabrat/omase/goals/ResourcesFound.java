@@ -1,7 +1,7 @@
 package com.mkhabrat.omase.goals;
 
-import com.mkhabrat.omase.domain.Area;
-import com.mkhabrat.omase.domain.Position;
+import com.mkhabrat.omase.domain.original.Area;
+import com.mkhabrat.omase.domain.original.Position;
 import lombok.extern.slf4j.Slf4j;
 
 
