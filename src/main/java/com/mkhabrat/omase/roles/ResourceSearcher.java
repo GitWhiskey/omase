@@ -2,6 +2,7 @@ package com.mkhabrat.omase.roles;
 
 import com.mkhabrat.omase.domain.original.Area;
 import com.mkhabrat.omase.domain.original.Position;
+import com.mkhabrat.omase.domain.original.dos.Agent;
 import com.mkhabrat.omase.goals.ResourcesFound;
 import lombok.Getter;
 import lombok.ToString;
@@ -21,19 +22,21 @@ public class ResourceSearcher extends Role {
         this.yDirection = SearchDirection.FROM_TOP_TO_BOTTOM;
     }
 
-    public Position act(Area area, Position currentPosition) {
+    public void makeIteration(Area area, Agent agent) {
         log.debug("Searching for new position.");
         int xDirectionInt = xDirection.getDirectionInt();
         int yDirectionInt = yDirection.getDirectionInt();
-        Position newPosition = (Position) currentPosition.clone();
+        Position oldPosition = agent.getPosition();
+        Position newPosition = (Position) oldPosition.clone();
+
         // Сдвигаемся на одну клетку по х
         newPosition.incrementXBy(xDirectionInt);
-        // Если мы натыкаемся на конец карты или преграду...
-        if (area.positionOutOfXBound(newPosition) || area.positionHasObstacles(newPosition)) {
+        // Если мы натыкаемся на конец карты...
+        if (area.positionOutOfXBound(newPosition)) {
             // ... Меняем направление по х...
             xDirection = xDirection.getOppositeDirection();
             // ... и сдвигаемся на новый ряд клеток (т. е. по оси у)
-            newPosition = (Position) currentPosition.clone();
+            newPosition = (Position) oldPosition.clone();
             newPosition.incrementYBy(yDirectionInt);
         }
         // В конце хода проверяем, не в углу ли мы. Если да, меняем направление Y в зависимости от угла
@@ -43,7 +46,7 @@ public class ResourceSearcher extends Role {
         }
 
         log.debug("Chose new position: {}", newPosition);
-        return newPosition;
+        agent.move(area, oldPosition, newPosition);
     }
 
     private enum SearchDirection {

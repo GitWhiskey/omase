@@ -1,10 +1,12 @@
 package com.mkhabrat.omase.domain.original;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 @ToString
+@EqualsAndHashCode
 public class Position implements Cloneable {
 
     @Getter @Setter

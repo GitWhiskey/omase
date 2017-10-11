@@ -56,7 +56,7 @@ public class Map<T extends AbstractNode> {
     protected static boolean CANMOVEDIAGONALY = true;
 
     /** holds nodes. first dim represents x-, second y-axis. */
-    protected T[][] nodes;
+    private T[][] nodes;
 
     /** width + 1 is size of first dimension of nodes. */
     protected int width;
@@ -118,7 +118,7 @@ public class Map<T extends AbstractNode> {
      * @param y
      * @return node
      */
-    public T getNode(int x, int y) {
+    public final T getNode(int x, int y) {
         // TODO check parameter.
         return nodes[x][y];
     }
@@ -126,7 +126,7 @@ public class Map<T extends AbstractNode> {
     /**
      * prints map to sto. Feel free to override this method.
      * <p>
-     * a player will be represented as "o", an unwakable terrain as "#".
+     * a player will be represented as "o", an unwalkable terrain as "#".
      * Movement penalty will not be displayed.
      */
     public void drawMap() {
@@ -141,7 +141,7 @@ public class Map<T extends AbstractNode> {
                 if (nodes[i][j].isWalkable()) {
                     print("  ");
                 } else {
-                    print(" #"); // draw unwakable
+                    print(" #"); // draw unwalkable
                 }
             }
             print("|\n"); // boarder of map

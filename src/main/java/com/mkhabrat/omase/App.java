@@ -1,16 +1,18 @@
 package com.mkhabrat.omase;
 
 import com.mkhabrat.omase.domain.original.Area;
-import lombok.extern.slf4j.Slf4j;
 import com.mkhabrat.omase.domain.original.Position;
 import com.mkhabrat.omase.domain.original.dos.Agent;
 import com.mkhabrat.omase.domain.original.dos.Base;
 import com.mkhabrat.omase.domain.original.dos.Resource;
 import com.mkhabrat.omase.goals.AllResourcesAreCollected;
 import com.mkhabrat.omase.goals.Goal;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 public class App {
@@ -32,8 +34,8 @@ public class App {
         init();
         // run infinite loop
         while (true) {
-            makeStep();
-            if (allResourcesAreCollected.isAchieved(resources)) {
+            makeIteration();
+            if (allResourcesAreCollected.isAchieved(area, null)) {
                 break;
             }
         }
@@ -44,7 +46,7 @@ public class App {
         area = new Area(20, 10);
         // init base
         Base base = new Base(Settings.BASE_POSITION);
-        area.placeDomainObject(base, base.getCurrentPosition());
+        area.placeDomainObjects(base.getPosition(), base);
         // init resources
         initResources();
         // init 3 agents
@@ -52,42 +54,39 @@ public class App {
     }
 
     private void initResources() {
-        Resource r1 = new Resource(3,5,3);
-        Resource r2 = new Resource(4, 1,6);
-        Resource r3 = new Resource(10, 3, 7);
-        Resource r4 = new Resource(19, 9,2);
-        Resource r5 = new Resource(2, 8,1);
+        resources = Stream.of(
+            new Resource(3,5,3),
+            new Resource(4, 1,6),
+            new Resource(10, 3, 7),
+            new Resource(19, 9,2),
+            new Resource(2, 8,1)
+        ).collect(Collectors.toList());
 
-        resources.add(r1);
-        resources.add(r2);
-        resources.add(r3);
-        resources.add(r4);
-        resources.add(r5);
-
-        area.placeDomainObject(r1, r1.getCurrentPosition());
-        area.placeDomainObject(r2, r2.getCurrentPosition());
-        area.placeDomainObject(r3, r3.getCurrentPosition());
-        area.placeDomainObject(r4, r4.getCurrentPosition());
-        area.placeDomainObject(r5, r5.getCurrentPosition());
+        int totalResources = 0;
+        for (Resource r : resources) {
+            area.placeDomainObjects(r.getPosition(), r);
+            totalResources += r.getQuantity();
+        }
+        area.setTotalAmountOfResources(totalResources);
     }
 
     private void initAgents() {
-        Agent a1 = new Agent(1, new Position(7, 1), Settings.BASE_POSITION);
-        Agent a2 = new Agent(2, new Position(15, 9), Settings.BASE_POSITION);
-        Agent a3 = new Agent(3, new Position(0, 5), Settings.BASE_POSITION);
+        Agent a1 = new Agent(1, new Position(7, 1), 5, Settings.BASE_POSITION);
+        Agent a2 = new Agent(2, new Position(15, 9), 5, Settings.BASE_POSITION);
+        Agent a3 = new Agent(3, new Position(0, 5), 5, Settings.BASE_POSITION);
 
         agents.add(a1);
         agents.add(a2);
         agents.add(a3);
 
-        area.placeDomainObject(a1, a1.getCurrentPosition());
-        area.placeDomainObject(a2, a2.getCurrentPosition());
-        area.placeDomainObject(a3, a3.getCurrentPosition());
+        area.placeDomainObjects(a1.getPosition(), a1);
+        area.placeDomainObjects(a2.getPosition(), a2);
+        area.placeDomainObjects(a3.getPosition(), a3);
     }
 
-    private void makeStep() {
+    private void makeIteration() {
         // all agents must perform action based on their roles
-        agents.forEach(a -> a.makeStep(area));
+        agents.forEach(a -> a.playRoles(area));
         delay(500);
     }
 

@@ -1,12 +1,14 @@
 package com.mkhabrat.omase.domain.original;
 
 import com.mkhabrat.omase.Settings;
-import com.mkhabrat.omase.domain.astar.EmptyObjectFactory;
+import com.mkhabrat.omase.domain.astar.DomainNode;
+import com.mkhabrat.omase.domain.astar.DomainNodeFactory;
 import com.mkhabrat.omase.domain.astar.EnhancedMap;
 import com.mkhabrat.omase.domain.original.dos.Base;
 import com.mkhabrat.omase.domain.original.dos.DomainObject;
 import com.mkhabrat.omase.domain.original.dos.Resource;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -18,38 +20,36 @@ public class Area {
     @Getter
     private int height;
 
-    private EnhancedMap<DomainObject> map;
+    private EnhancedMap map;
+
+    @Getter @Setter
+    int totalAmountOfResources;
 
     public Area(int width, int height) {
         this.width = width;
         this.height = height;
-        this.map = new EnhancedMap<>(width, height, new EmptyObjectFactory());
+        this.map = new EnhancedMap(width, height, new DomainNodeFactory());
     }
 
-    public void placeDomainObject(DomainObject dObject, int x, int y) {
-        map.placeNode(dObject, x, y);
+    public void placeDomainObjects(Position position, DomainObject... dObjects) {
+        placeDomainObjects(position.getX(), position.getY(), dObjects);
     }
 
-    public void placeDomainObject(DomainObject dObject, Position position) {
-        placeDomainObject(dObject, position.getX(), position.getY());
+    public void placeDomainObjects(int x, int y, DomainObject... dObjects) {
+        map.addDomainObjectsToNode(x, y, dObjects);
     }
+
+    public void removeDomainObjects(Position position, DomainObject... dObjects) {
+        map.removeDomainObjects(position, dObjects);
+    }
+
 
     public boolean positionHasResources(Position position) {
-        return checkTypeOnPosition(position, Resource.class);
-    }
-
-    private boolean checkTypeOnPosition(Position position, Class checkedType) {
-        DomainObject domainObject = (DomainObject) map.getNode(position.getX(), position.getY());
-        return checkedType.isInstance(domainObject);
+        return map.hasTypeOnPosition(position, Resource.class);
     }
 
     public boolean positionOutOfXBound(Position position) {
         return position.getX() < 0 || position.getX() >= width;
-    }
-
-    public boolean positionHasObstacles(Position position) {
-        DomainObject domainObject = (DomainObject) map.getNode(position.getX(), position.getY());
-        return domainObject instanceof Base;
     }
 
     public boolean positionIsCorner(Position position) {
@@ -74,9 +74,21 @@ public class Area {
         }
     }
 
-    public List<DomainObject> getPathToBase(Position currentPosition) {
-        Position basePosition = Settings.BASE_POSITION;
-        return map.findPath(currentPosition.getX(), currentPosition.getY(), basePosition.getX(), basePosition.getY());
+    public List<DomainNode> findShortestPath(Position from, Position to) {
+        return map.findPath(from.getX(), from.getY(), to.getX(), to.getY());
+    }
+
+    public void moveDomainObjects(Position oldPosition, Position newPosition, DomainObject... domainObjects) {
+        removeDomainObjects(oldPosition, domainObjects);
+        placeDomainObjects(newPosition, domainObjects);
+    }
+
+    public DomainObject getDomainObjectAtPosition(Position position, Class type) {
+        return map.getDomainObjectAtPosition(position, type);
+    }
+
+    public Base getBase() {
+        return (Base) getDomainObjectAtPosition(Settings.BASE_POSITION, Base.class);
     }
 
     public enum Corner {
