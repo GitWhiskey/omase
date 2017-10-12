@@ -22,6 +22,7 @@ public abstract class Role {
     public enum RoleName {
         RESOURCE_SEARCHER,
         RESOURCE_PICKER,
-        RESOURCE_TO_BASE_CARRIER
+        RESOURCE_TO_BASE_CARRIER,
+        RESOURCE_AT_BASE_DROPPER
     }
 }

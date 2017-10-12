@@ -2,10 +2,7 @@ package com.mkhabrat.omase.domain.original.dos;
 
 import com.mkhabrat.omase.domain.original.Area;
 import com.mkhabrat.omase.domain.original.Position;
-import com.mkhabrat.omase.roles.ResourcePicker;
-import com.mkhabrat.omase.roles.ResourceSearcher;
-import com.mkhabrat.omase.roles.ResourceToBaseCarrier;
-import com.mkhabrat.omase.roles.Role;
+import com.mkhabrat.omase.roles.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -62,6 +59,12 @@ public class Agent extends DomainObject {
                 break;
             case RESOURCE_PICKER:
                 roles = Collections.singletonList(new ResourceToBaseCarrier());
+                break;
+            case RESOURCE_TO_BASE_CARRIER:
+                roles = Collections.singletonList(new ResourceAtBaseDropper());
+                break;
+            case RESOURCE_AT_BASE_DROPPER:
+                roles = Collections.singletonList(new ResourceSearcher());
                 break;
             default:
                 log.error("Unknown role: {}", finishedRole.getName());
