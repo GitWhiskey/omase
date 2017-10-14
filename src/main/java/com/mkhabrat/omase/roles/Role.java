@@ -23,6 +23,9 @@ public abstract class Role {
         RESOURCE_SEARCHER,
         RESOURCE_PICKER,
         RESOURCE_TO_BASE_CARRIER,
-        RESOURCE_AT_BASE_DROPPER
+        RESOURCE_AT_BASE_DROPPER,
+        TRAIL_CREATOR,
+        TRAIL_REMOVER,
+        TRAIL_FOLLOWER
     }
 }

@@ -6,12 +6,17 @@ import com.mkhabrat.omase.domain.astar.DomainNodeFactory;
 import com.mkhabrat.omase.domain.astar.EnhancedMap;
 import com.mkhabrat.omase.domain.original.dos.Base;
 import com.mkhabrat.omase.domain.original.dos.DomainObject;
+import com.mkhabrat.omase.domain.original.dos.TrailSegment;
 import com.mkhabrat.omase.domain.original.dos.Resource;
+import javafx.geometry.Pos;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.Optional;
 
+@Slf4j
 public class Area {
 
     @Getter
@@ -43,9 +48,12 @@ public class Area {
         map.removeDomainObjects(position, dObjects);
     }
 
-
     public boolean positionHasResources(Position position) {
         return map.hasTypeOnPosition(position, Resource.class);
+    }
+
+    public boolean positionHasTrailSegment(Position position) {
+        return map.hasTypeOnPosition(position, TrailSegment.class);
     }
 
     public boolean positionOutOfXBound(Position position) {
@@ -87,8 +95,29 @@ public class Area {
         return map.getDomainObjectAtPosition(position, type);
     }
 
+    public List<DomainObject> getAllDomainObjectsOfTypeAtPosition(Position position, Class type) {
+        return map.getAllDomainObjectsOfTypeAtPosition(position, type);
+    }
+
     public Base getBase() {
         return (Base) getDomainObjectAtPosition(Settings.BASE_POSITION, Base.class);
+    }
+
+    public Resource getResourceAtPosition(Position position) {
+        return (Resource) getDomainObjectAtPosition(position, Resource.class);
+    }
+
+    public TrailSegment getTrailSegmentById(int followedPathId, Position position) {
+        List<DomainObject> trailSegmentsAtPosition = getAllDomainObjectsOfTypeAtPosition(position, TrailSegment.class);
+        Optional<DomainObject> tsOpt = trailSegmentsAtPosition.stream().filter(
+                domainObject -> ((TrailSegment) domainObject).getId() == followedPathId
+        ).findAny();
+        if (tsOpt.isPresent()) {
+            return (TrailSegment) tsOpt.get();
+        } else {
+            log.error("No trail segments start at {}", position);
+            return null;
+        }
     }
 
     public enum Corner {

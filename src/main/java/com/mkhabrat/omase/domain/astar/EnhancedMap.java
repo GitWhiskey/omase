@@ -4,10 +4,12 @@ import com.mkhabrat.omase.astar.Map;
 import com.mkhabrat.omase.astar.NodeFactory;
 import com.mkhabrat.omase.domain.original.Position;
 import com.mkhabrat.omase.domain.original.dos.DomainObject;
+import com.mkhabrat.omase.domain.original.dos.TrailSegment;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class EnhancedMap extends Map<DomainNode> {
 
@@ -45,5 +47,10 @@ public class EnhancedMap extends Map<DomainNode> {
         } else {
             throw new RuntimeException("No objects of type " + type + " found at position " + position);
         }
+    }
+
+    public List<DomainObject> getAllDomainObjectsOfTypeAtPosition(Position position, Class type) {
+        List<DomainObject> dos = getNode(position.getX(), position.getY()).getDomainObjects();
+        return dos.stream().filter(type::isInstance).collect(Collectors.toList());
     }
 }
