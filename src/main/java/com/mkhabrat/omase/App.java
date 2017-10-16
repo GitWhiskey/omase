@@ -19,7 +19,7 @@ public class App {
 
     private Goal allResourcesAreCollected = new AllResourcesAreCollected();
 
-    private Area area;
+    protected Area area;
     private List<Resource> resources = new ArrayList<Resource>();
     private List<Agent> agents = new ArrayList<Agent>();
 
@@ -41,7 +41,7 @@ public class App {
         }
     }
 
-    private void init() {
+    public void init() {
         // init area
         area = new Area(20, 10);
         // init base
@@ -84,7 +84,7 @@ public class App {
         area.placeDomainObjects(a3.getPosition(), a3);
     }
 
-    private void makeIteration() {
+    protected void makeIteration() {
         // all agents must perform action based on their roles
         agents.forEach(a -> a.playRoles(area));
         delay(500);

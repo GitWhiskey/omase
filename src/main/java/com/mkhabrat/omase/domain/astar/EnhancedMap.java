@@ -4,7 +4,6 @@ import com.mkhabrat.omase.astar.Map;
 import com.mkhabrat.omase.astar.NodeFactory;
 import com.mkhabrat.omase.domain.original.Position;
 import com.mkhabrat.omase.domain.original.dos.DomainObject;
-import com.mkhabrat.omase.domain.original.dos.TrailSegment;
 
 import java.util.Arrays;
 import java.util.List;
@@ -52,5 +51,9 @@ public class EnhancedMap extends Map<DomainNode> {
     public List<DomainObject> getAllDomainObjectsOfTypeAtPosition(Position position, Class type) {
         List<DomainObject> dos = getNode(position.getX(), position.getY()).getDomainObjects();
         return dos.stream().filter(type::isInstance).collect(Collectors.toList());
+    }
+
+    public List<DomainObject> getAllDomainObjectsAtPosition(Position position) {
+        return getNode(position.getX(), position.getY()).getDomainObjects();
     }
 }

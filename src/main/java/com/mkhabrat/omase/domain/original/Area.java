@@ -4,11 +4,7 @@ import com.mkhabrat.omase.Settings;
 import com.mkhabrat.omase.domain.astar.DomainNode;
 import com.mkhabrat.omase.domain.astar.DomainNodeFactory;
 import com.mkhabrat.omase.domain.astar.EnhancedMap;
-import com.mkhabrat.omase.domain.original.dos.Base;
-import com.mkhabrat.omase.domain.original.dos.DomainObject;
-import com.mkhabrat.omase.domain.original.dos.TrailSegment;
-import com.mkhabrat.omase.domain.original.dos.Resource;
-import javafx.geometry.Pos;
+import com.mkhabrat.omase.domain.original.dos.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +46,10 @@ public class Area {
 
     public boolean positionHasResources(Position position) {
         return map.hasTypeOnPosition(position, Resource.class);
+    }
+
+    public boolean positionHasAgent(Position position) {
+        return map.hasTypeOnPosition(position, Agent.class);
     }
 
     public boolean positionHasTrailSegment(Position position) {
@@ -97,6 +97,10 @@ public class Area {
 
     public List<DomainObject> getAllDomainObjectsOfTypeAtPosition(Position position, Class type) {
         return map.getAllDomainObjectsOfTypeAtPosition(position, type);
+    }
+
+    public List<DomainObject> getAllDomainObjectsAtPosition(Position position) {
+        return map.getAllDomainObjectsAtPosition(position);
     }
 
     public Base getBase() {
