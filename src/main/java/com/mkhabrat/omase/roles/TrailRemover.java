@@ -6,10 +6,12 @@ import com.mkhabrat.omase.domain.original.dos.Agent;
 import com.mkhabrat.omase.domain.original.dos.DomainObject;
 import com.mkhabrat.omase.domain.original.dos.TrailSegment;
 import com.mkhabrat.omase.goals.TrailRemoved;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 public class TrailRemover extends Role {
 
     public TrailRemover() {
@@ -37,7 +39,8 @@ public class TrailRemover extends Role {
         if (tsOpt.isPresent()) {
             return (TrailSegment) tsOpt.get();
         } else {
-            throw new RuntimeException("No trail segments start at " + position);
+            log.info("No trail segments start at " + position);
+            return null;
         }
     }
 }

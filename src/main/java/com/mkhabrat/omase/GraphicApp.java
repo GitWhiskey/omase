@@ -55,8 +55,8 @@ public class GraphicApp extends App {
 //    }
 
     private void initGraphics() {
-        int wWidth = area.getWidth() * Settings.PIXELS_PER_MAP_TILE;
-        int wHeight = area.getHeight() * Settings.PIXELS_PER_MAP_TILE;
+        int wWidth = area.getWidth() * (Settings.PIXELS_PER_MAP_TILE + 2);
+        int wHeight = area.getHeight() * (Settings.PIXELS_PER_MAP_TILE + 2);
 
         JFrame window = new JFrame();
         window.setTitle("OMaSE Agents");

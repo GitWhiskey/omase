@@ -20,10 +20,12 @@ public class ResourcePicker extends Role {
     public void makeIteration(Area area, Agent agent) {
         Position currentPosition = agent.getPosition();
         // На всякий случай предполагаем, что тут точно есть ресурс
-        assert area.positionHasResources(currentPosition);
+        if (!area.positionHasResources(currentPosition)) {
+            return;
+        }
         // Подбираем ресурс
         Resource resource = (Resource) area.getDomainObjectAtPosition(currentPosition, Resource.class);
-        if (resource.getQuantity() < agent.getCapacity()) {
+        if (resource.getQuantity() <= agent.getCapacity()) {
             // Если агент может взять все
             agent.setCarriedResourceAmount(resource.getQuantity());
             area.removeDomainObjects(currentPosition, resource);

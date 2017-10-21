@@ -12,10 +12,12 @@ public class TrailCreator extends Role {
 
     private TrailSegment previousTrailSegment;
 
-    public TrailCreator(int trailId, Position startPosition) {
+    public TrailCreator(int trailId, Area area, Position startPosition) {
         this.name = RoleName.TRAIL_CREATOR;
         this.goal = new TrailCreated();
-        this.previousTrailSegment = new TrailSegment(trailId, startPosition);
+        TrailSegment trailStart = new TrailSegment(trailId, startPosition);
+        area.placeDomainObjects(startPosition, trailStart);
+        this.previousTrailSegment = trailStart;
     }
 
     @Override

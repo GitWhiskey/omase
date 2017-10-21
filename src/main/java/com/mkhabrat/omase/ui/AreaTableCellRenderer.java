@@ -33,11 +33,17 @@ public class AreaTableCellRenderer extends DefaultTableCellRenderer {
             String agentId = Integer.toString(tableModel.getAgentIdAtCell(row, col));
             l.setText(agentId);
         }
+        if (tableModel.cellContainsBase(row, col)) {
+            l.setBackground(Color.BLUE);
+            l.setText("B");
+        }
         if (
             !tableModel.cellContainsTrailSegment(row, col)
             && !tableModel.cellContainsResources(row, col)
-            && !tableModel.cellContainsAgent(row, col)) {
+            && !tableModel.cellContainsAgent(row, col)
+            && !tableModel.cellContainsBase(row, col)) {
             l.setBackground(Color.WHITE);
+            l.setText("");
         }
 
         //Return the JLabel which renders the cell.

@@ -55,11 +55,13 @@ public class App {
 
     private void initResources() {
         resources = Stream.of(
-            new Resource(3,5,3),
+            new Resource(10,1,12),
             new Resource(4, 1,6),
             new Resource(10, 3, 7),
             new Resource(19, 9,2),
-            new Resource(2, 8,1)
+            new Resource(2, 8,10),
+            new Resource(12, 2,10)
+//            new Resource(8, 5,10)
         ).collect(Collectors.toList());
 
         int totalResources = 0;
@@ -71,7 +73,7 @@ public class App {
     }
 
     private void initAgents() {
-        Agent a1 = new Agent(1, new Position(7, 1), 5, Settings.BASE_POSITION);
+        Agent a1 = new Agent(1, new Position(5, 1), 5, Settings.BASE_POSITION);
         Agent a2 = new Agent(2, new Position(15, 9), 5, Settings.BASE_POSITION);
         Agent a3 = new Agent(3, new Position(0, 5), 5, Settings.BASE_POSITION);
 
@@ -92,7 +94,7 @@ public class App {
 
     private void delay(int millis) {
         try {
-            Thread.sleep(millis);
+            Thread.sleep(millis/2);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

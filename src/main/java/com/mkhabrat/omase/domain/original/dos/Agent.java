@@ -57,37 +57,55 @@ public class Agent extends DomainObject {
     }
 
     private void changeRoleList(Role finishedRole, Area area) {
+        boolean trailPresent = area.positionHasTrailSegment(this.position);
         switch (finishedRole.getName()) {
-            case RESOURCE_SEARCHER:
+            case RESOURCE_SEARCHER: {
                 Resource resource = area.getResourceAtPosition(this.position);
-                boolean trailPresent = area.positionHasTrailSegment(this.position);
                 // Если агент может взять все и до ресурса есть след, агент должен его убрать
                 this.roles = resource.getQuantity() <= this.capacity && trailPresent
                         ? Arrays.asList(new ResourcePicker(), new TrailRemover())
                         : Collections.singletonList(new ResourcePicker());
                 break;
-            case RESOURCE_PICKER:
+            }
+            case RESOURCE_PICKER: {
+                boolean resourcesAllPickedUp = !area.positionHasResources(this.position);
                 // Если путь уже проложен просто несем на базу, иначе несем на базу и создаем след
-                if (area.positionHasTrailSegment(this.position)) {
+                if (trailPresent || resourcesAllPickedUp) {
                     this.roles = Collections.singletonList(new ResourceToBaseCarrier());
                 } else {
-                    this.roles = Arrays.asList(new ResourceToBaseCarrier(), new TrailCreator(this.id, this.position));
+                    this.roles = Arrays.asList(
+                            new ResourceToBaseCarrier(),
+                            new TrailCreator(this.id, area, this.position)
+                    );
                     this.followedPathId = this.id;
                 }
                 break;
-            case RESOURCE_TO_BASE_CARRIER:
+            }
+            case RESOURCE_TO_BASE_CARRIER: {
                 this.roles = Collections.singletonList(new ResourceAtBaseDropper());
                 break;
-            case RESOURCE_AT_BASE_DROPPER:
+            }
+            case RESOURCE_AT_BASE_DROPPER: {
                 this.roles = area.positionHasTrailSegment(this.position)
-                        ? Collections.singletonList(new TrailFollower(this.followedPathId, area, this.position))
+                        ? Collections.singletonList(new TrailFollower(this, area, this.position))
                         : Collections.singletonList(new ResourceSearcher());
                 break;
-            case TRAIL_FOLLOWER:
-                this.roles = this.followedPathId <= 0
-                        ? Collections.singletonList(new ResourceSearcher())
-                        : Collections.singletonList(new ResourcePicker());
+            }
+            case TRAIL_FOLLOWER: {
+                boolean agentLostTrail = this.followedPathId <= 0;
+                if (agentLostTrail) {
+                    this.roles = Collections.singletonList(new ResourceSearcher());
+                } else {
+                    Resource resource = area.getResourceAtPosition(this.position);
+                    boolean canPickAllRemainingResources = resource.getQuantity() <= this.capacity;
+                    if (canPickAllRemainingResources) {
+                        this.roles = Arrays.asList(new TrailRemover(), new ResourcePicker());
+                    } else {
+                        this.roles = Collections.singletonList(new ResourcePicker());
+                    }
+                }
                 break;
+            }
             default:
                 log.error("Unknown role: {}", finishedRole.getName());
         }

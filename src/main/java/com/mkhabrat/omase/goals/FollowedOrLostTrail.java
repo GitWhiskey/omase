@@ -18,7 +18,7 @@ public class FollowedOrLostTrail extends Goal {
         } else {
             Position currentPosition = agent.getPosition();
             boolean hasResource = area.positionHasResources(currentPosition);
-            TrailSegment trailSegment = area.getTrailSegmentById(agent.getFollowedPathId(), currentPosition);
+            TrailSegment trailSegment = area.findOldTrailSegment(agent.getFollowedPathId(), currentPosition);
             if (hasResource && trailSegment.getPrevious() == null) {
                 log.info("Followed trail and found resource at {}", currentPosition);
                 return true;

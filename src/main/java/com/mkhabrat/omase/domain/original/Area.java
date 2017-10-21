@@ -44,6 +44,10 @@ public class Area {
         map.removeDomainObjects(position, dObjects);
     }
 
+    public boolean positionHasBase(Position position) {
+        return map.hasTypeOnPosition(position, Base.class);
+    }
+
     public boolean positionHasResources(Position position) {
         return map.hasTypeOnPosition(position, Resource.class);
     }
@@ -111,13 +115,41 @@ public class Area {
         return (Resource) getDomainObjectAtPosition(position, Resource.class);
     }
 
-    public TrailSegment getTrailSegmentById(int followedPathId, Position position) {
+//    public TrailSegment getTrailSegmentById(int followedPathId, Position position) {
+//        Optional<DomainObject> optionalTrailSegment;
+//        if (followedPathId <= 0) {
+//            log.info("Going to follow a new trail.");
+//            optionalTrailSegment = findNewTrailSegment(position);
+//        } else {
+//            optionalTrailSegment = findOldTrailSegment(followedPathId, position);
+//        }
+//        if (optionalTrailSegment.isPresent()) {
+//            return (TrailSegment) optionalTrailSegment.get();
+//        } else {
+//            log.error("No trail segments start at {}", position);
+//            return null;
+//        }
+//    }
+
+    public TrailSegment findNewTrailSegment(Position position) {
+        log.info("Going to follow a new trail.");
         List<DomainObject> trailSegmentsAtPosition = getAllDomainObjectsOfTypeAtPosition(position, TrailSegment.class);
-        Optional<DomainObject> tsOpt = trailSegmentsAtPosition.stream().filter(
+        Optional<DomainObject> optionalTrailSegment = trailSegmentsAtPosition.stream().findAny();
+        if (optionalTrailSegment.isPresent()) {
+            return (TrailSegment) optionalTrailSegment.get();
+        } else {
+            log.error("No trail segments start at {}", position);
+            return null;
+        }
+    }
+
+    public TrailSegment findOldTrailSegment(int followedPathId, Position position) {
+        List<DomainObject> trailSegmentsAtPosition = getAllDomainObjectsOfTypeAtPosition(position, TrailSegment.class);
+        Optional<DomainObject> optionalTrailSegment = trailSegmentsAtPosition.stream().filter(
                 domainObject -> ((TrailSegment) domainObject).getId() == followedPathId
         ).findAny();
-        if (tsOpt.isPresent()) {
-            return (TrailSegment) tsOpt.get();
+        if (optionalTrailSegment.isPresent()) {
+            return (TrailSegment) optionalTrailSegment.get();
         } else {
             log.error("No trail segments start at {}", position);
             return null;

@@ -9,5 +9,5 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class Settings {
     public Position BASE_POSITION = new Position(0,0);
-    public int PIXELS_PER_MAP_TILE = 30;
+    public int PIXELS_PER_MAP_TILE = 50;
 }

@@ -86,4 +86,8 @@ public class AreaTableModel implements TableModel {
     public boolean cellContainsTrailSegment(int rowIndex, int columnIndex) {
         return area.positionHasTrailSegment(new Position(columnIndex, rowIndex));
     }
+
+    public boolean cellContainsBase(int rowIndex, int columnIndex) {
+        return area.positionHasBase(new Position(columnIndex, rowIndex));
+    }
 }
