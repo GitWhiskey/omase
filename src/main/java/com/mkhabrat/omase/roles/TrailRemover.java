@@ -14,20 +14,21 @@ import java.util.Optional;
 @Slf4j
 public class TrailRemover extends Role {
 
-    public TrailRemover() {
+    private int removedTrailId;
+
+    public TrailRemover(Area area, Position position) {
         this.name = RoleName.TRAIL_REMOVER;
         this.goal = new TrailRemoved();
+        TrailSegment trailSegment = getFirstTrailSegment(area, position);
+        this.removedTrailId = trailSegment.getId();
+        area.removeDomainObjects(position, trailSegment);
     }
 
     @Override
     public void makeIteration(Area area, Agent agent) {
         Position currentPosition = agent.getPosition();
-        TrailSegment segment = getFirstTrailSegment(area, currentPosition);
-
-        while (segment != null) {
-            area.removeDomainObjects(segment.getPosition(), segment);
-            segment = segment.getNext();
-        }
+        TrailSegment trailSegment = area.findOldTrailSegment(removedTrailId, currentPosition);
+        area.removeDomainObjects(currentPosition, trailSegment);
     }
 
     private TrailSegment getFirstTrailSegment(Area area, Position position) {

@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -57,27 +57,26 @@ public class Agent extends DomainObject {
     }
 
     private void changeRoleList(Role finishedRole, Area area) {
-        boolean trailPresent = area.positionHasTrailSegment(this.position);
         switch (finishedRole.getName()) {
             case RESOURCE_SEARCHER: {
-                Resource resource = area.getResourceAtPosition(this.position);
-                // Если агент может взять все и до ресурса есть след, агент должен его убрать
-                this.roles = resource.getQuantity() <= this.capacity && trailPresent
-                        ? Arrays.asList(new ResourcePicker(), new TrailRemover())
-                        : Collections.singletonList(new ResourcePicker());
+                this.roles = area.positionHasResources(this.position)
+                    ? Collections.singletonList(new ResourcePicker())
+                    : Collections.singletonList(new TrailFollower(this, area, this.position));
                 break;
             }
             case RESOURCE_PICKER: {
                 boolean resourcesAllPickedUp = !area.positionHasResources(this.position);
-                // Если путь уже проложен просто несем на базу, иначе несем на базу и создаем след
-                if (trailPresent || resourcesAllPickedUp) {
-                    this.roles = Collections.singletonList(new ResourceToBaseCarrier());
-                } else {
-                    this.roles = Arrays.asList(
-                            new ResourceToBaseCarrier(),
-                            new TrailCreator(this.id, area, this.position)
-                    );
+                boolean trailPresent = area.positionHasTrailSegment(this.position);
+                // Агент будет нести ресурс на базу
+                this.roles = new ArrayList<>();
+                this.roles.add(new ResourceToBaseCarrier());
+                // Если при этом ресурсы еще остались, а след еще не проложен - попутно прокладываем след
+                if (!resourcesAllPickedUp && !trailPresent) {
+                    this.roles.add(new TrailCreator(this.id, area, this.position));
                     this.followedPathId = this.id;
+                // Если все ресурсы в этой позиции собраны и проложен путь - его нужно попутно убирать
+                } else if (resourcesAllPickedUp && trailPresent) {
+                    this.roles.add(new TrailRemover(area, position));
                 }
                 break;
             }
@@ -96,13 +95,7 @@ public class Agent extends DomainObject {
                 if (agentLostTrail) {
                     this.roles = Collections.singletonList(new ResourceSearcher());
                 } else {
-                    Resource resource = area.getResourceAtPosition(this.position);
-                    boolean canPickAllRemainingResources = resource.getQuantity() <= this.capacity;
-                    if (canPickAllRemainingResources) {
-                        this.roles = Arrays.asList(new TrailRemover(), new ResourcePicker());
-                    } else {
-                        this.roles = Collections.singletonList(new ResourcePicker());
-                    }
+                    this.roles = Collections.singletonList(new ResourcePicker());
                 }
                 break;
             }

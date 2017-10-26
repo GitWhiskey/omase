@@ -3,7 +3,7 @@ package com.mkhabrat.omase.roles;
 import com.mkhabrat.omase.domain.original.Area;
 import com.mkhabrat.omase.domain.original.Position;
 import com.mkhabrat.omase.domain.original.dos.Agent;
-import com.mkhabrat.omase.goals.ResourcesFound;
+import com.mkhabrat.omase.goals.ResourcesOrTrailFound;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ public class ResourceSearcher extends Role {
 
     public ResourceSearcher() {
         this.name = RoleName.RESOURCE_SEARCHER;
-        this.goal = new ResourcesFound();
+        this.goal = new ResourcesOrTrailFound();
         this.xDirection = SearchDirection.FROM_LEFT_TO_RIGHT;
         this.yDirection = SearchDirection.FROM_TOP_TO_BOTTOM;
     }
