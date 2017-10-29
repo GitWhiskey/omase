@@ -20,8 +20,8 @@ public class App {
     private Goal allResourcesAreCollected = new AllResourcesAreCollected();
 
     protected Area area;
-    private List<Resource> resources = new ArrayList<Resource>();
-    private List<Agent> agents = new ArrayList<Agent>();
+    private List<Resource> resources = new ArrayList<>();
+    private List<Agent> agents = new ArrayList<>();
 
     public static void main(String[] args) {
         App app = new App();
@@ -35,6 +35,7 @@ public class App {
         // run infinite loop
         while (true) {
             makeIteration();
+            // Если главная цель (собрать все ресурсы) завершена, прерываем бесконечный цикл
             if (allResourcesAreCollected.isAchieved(area, null)) {
                 break;
             }
@@ -54,10 +55,11 @@ public class App {
     }
 
     private void initResources() {
+        // Менять набор и количество ресурсов здесь
         resources = Stream.of(
-//            new Resource(10,1,12),
-//            new Resource(4, 1,6),
-//            new Resource(10, 3, 7),
+            new Resource(10,1,12),
+            new Resource(4, 1,6),
+            new Resource(10, 3, 7),
             new Resource(19, 9,38)
 //            new Resource(2, 8,10),
 //            new Resource(12, 2,10)
@@ -73,17 +75,14 @@ public class App {
     }
 
     private void initAgents() {
-        Agent a1 = new Agent(1, new Position(5, 1), 5, Settings.BASE_POSITION);
-        Agent a2 = new Agent(2, new Position(15, 9), 5, Settings.BASE_POSITION);
-//        Agent a3 = new Agent(3, new Position(0, 5), 5, Settings.BASE_POSITION);
+        // Менять набор и атрибуты агентов здесь
+        agents = Stream.of(
+            new Agent(1, new Position(5, 1), 5, Settings.BASE_POSITION),
+            new Agent(2, new Position(13, 9), 5, Settings.BASE_POSITION),
+            new Agent(3, new Position(0, 5), 5, Settings.BASE_POSITION)
+        ).collect(Collectors.toList());
 
-        agents.add(a1);
-        agents.add(a2);
-//        agents.add(a3);
-
-        area.placeDomainObjects(a1.getPosition(), a1);
-        area.placeDomainObjects(a2.getPosition(), a2);
-//        area.placeDomainObjects(a3.getPosition(), a3);
+        agents.forEach(a -> area.placeDomainObjects(a.getPosition(), a));
     }
 
     protected void makeIteration() {

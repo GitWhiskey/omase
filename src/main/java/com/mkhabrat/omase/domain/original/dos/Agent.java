@@ -56,11 +56,20 @@ public class Agent extends DomainObject {
         }
     }
 
+    /**
+     * Здесь происходит смена ролей в зависимости от законченной роли, состояния агента и его положения на карте
+     * @param finishedRole Завершенная роль
+     * @param area Карта
+     */
     private void changeRoleList(Role finishedRole, Area area) {
         switch (finishedRole.getName()) {
             case RESOURCE_SEARCHER: {
-                this.roles = area.positionHasResources(this.position)
+                // Если роль "Поисковик ресурсов" завершена, значит мы либо наткнулись на ресурс, либо на след,
+                // оставленный другим агентом
+                this.roles = area.positionHasResources(this.position) // Если на текущей позиции есть ресурс...
+                    // ... добавляем роль "Поднимателя ресурсов" ...
                     ? Collections.singletonList(new ResourcePicker())
+                    // ... иначе "Следователь по пути"
                     : Collections.singletonList(new TrailFollower(this, area, this.position));
                 break;
             }
@@ -81,22 +90,34 @@ public class Agent extends DomainObject {
                 break;
             }
             case RESOURCE_TO_BASE_CARRIER: {
+                // Если роль "Носитель до базы" завершена, значит мы на базе, поэтому сбрасываем ресурс
                 this.roles = Collections.singletonList(new ResourceAtBaseDropper());
                 break;
             }
             case RESOURCE_AT_BASE_DROPPER: {
+                // Сбросив ресурс, агент смотрит, присустствует ли след до базы.
                 this.roles = area.positionHasTrailSegment(this.position)
+                        // Если присутствует следуем по нему
                         ? Collections.singletonList(new TrailFollower(this, area, this.position))
+                        // Иначе идем искать другие ресурсы
                         : Collections.singletonList(new ResourceSearcher());
                 break;
             }
             case TRAIL_FOLLOWER: {
+                // Если роль "Следователь по пути" завершена, значит агент либо потерял след
+                // (его затер другой агент, забрав последний ресурс), либо добрался до ресурса, и должен его поднять
                 boolean agentLostTrail = this.followedPathId <= 0;
                 if (agentLostTrail) {
                     this.roles = Collections.singletonList(new ResourceSearcher());
                 } else {
                     this.roles = Collections.singletonList(new ResourcePicker());
                 }
+                break;
+            } case TRAIL_CREATOR: {
+                // При завершении этой роли ничего делать не нужно
+                break;
+            } case TRAIL_REMOVER: {
+                // При завершении этой роли ничего делать не нужно
                 break;
             }
             default:

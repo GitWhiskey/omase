@@ -16,6 +16,7 @@ public class TrailRemoved extends Goal {
         boolean trailPresentAtEnd = area.positionHasTrailSegment(Settings.BASE_POSITION);
         if (!trailPresentAtStart && !trailPresentAtEnd) {
             log.info("Agent {} removed path.", agent.getId());
+            agent.setFollowedPathId(-1);
             return true;
         } else {
             return false;
