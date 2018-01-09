@@ -3,11 +3,9 @@ package com.mkhabrat.omase.roles;
 import com.mkhabrat.omase.domain.original.Area;
 import com.mkhabrat.omase.domain.original.Position;
 import com.mkhabrat.omase.domain.original.dos.Agent;
-import com.mkhabrat.omase.domain.original.dos.DomainObject;
 import com.mkhabrat.omase.domain.original.dos.TrailSegment;
 import com.mkhabrat.omase.goals.FollowedOrLostTrail;
 import lombok.extern.slf4j.Slf4j;
-import org.lwjgl.system.CallbackI;
 
 @Slf4j
 public class TrailFollower extends Role {
